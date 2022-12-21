@@ -7,7 +7,7 @@
 To install the tool from the command line:
 
 ~~~
-curl -sL https://raw.githubusercontent.com/dchassin/gridlabd-advisor/main/install.sh | 
+gridlabd install dchassin/gridlabd-advisor
 ~~~
 ~~~
 Done. Use 'gridlabd advisor help' for more information.
