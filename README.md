@@ -30,6 +30,14 @@ To get advice:
 
 ~~~
 gridlabd advisor 'How do I define a class in GridLAB-D?'
+In GridLAB-D, classes are defined using the class keyword followed by the class 
+name. The class definition is then enclosed by a pair of curly braces and may 
+contain other objects, such as properties, functions, and variables. For example, 
+the following code defines a class called "MyClass":
+
+class MyClass {
+    // class definition goes here
+};
 ~~~
 
 ## Useful Options
