@@ -7,7 +7,7 @@
 To install the tool from the command line:
 
 ~~~
-sh$ curl -sL https://raw.githubusercontent.com/dchassin/gridlabd-advisor/install.sh | bash
+curl -sL https://raw.githubusercontent.com/dchassin/gridlabd-advisor/main/install.sh | bash
 ~~~
 
 ## API Key
@@ -15,13 +15,13 @@ sh$ curl -sL https://raw.githubusercontent.com/dchassin/gridlabd-advisor/install
 To obtain an API key from OpenAI:
 
 ~~~
-sh$ gridlabd advisor --signup
+gridlabd advisor --signup
 ~~~
 
 After you signup, you can copy the key for your clipboard and paste it on the command line when you install the API key:
 
 ~~~
-sh$ gridlabd advisor --apikey=YOUR_APIKEY
+gridlabd advisor --apikey=YOUR_APIKEY
 ~~~
 
 ## Usage
@@ -29,7 +29,7 @@ sh$ gridlabd advisor --apikey=YOUR_APIKEY
 To get advice:
 
 ~~~
-sh$ gridlabd advisor 'How do I define a class in GridLAB-D?'
+gridlabd advisor 'How do I define a class in GridLAB-D?'
 ~~~
 
 ## Useful Options
@@ -56,5 +56,5 @@ Force responses to queries even when the advisor thinks they are not related to 
 To get detailed help:
 
 ~~~
-sh$ gridlabd advisor help
+gridlabd advisor help
 ~~~
