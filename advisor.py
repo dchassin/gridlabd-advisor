@@ -6,6 +6,7 @@ Syntax:
 
 Options:
 
+  --help|-h|help            display this documentation
   --signup                  signup for an API key (opens browser)
   --apikey=<str>            set the API key
   --responses|-N=<int>      request multiple responses (default 1)
@@ -16,6 +17,15 @@ Options:
   --length|-L=<int>         set the number of token allowed in the response 
                             (default 1024)
   --model|-M=<str>          set the bot name (default is "text-davinci-003")
+  --quiet|-q[=<bool>]       disable error message output
+  --warning|-w[=<bool>]     disable warning message output
+  --silent[=<bool>]         disable warning and error message output
+  --debug[=<bool>]          enable traceback on exceptions
+
+Description:
+
+  The advisor generates responses using OpenAI completion API.  Responses
+  can be expected to vary unless a 0 temperature is used. 
 
 Environment:
 
@@ -158,6 +168,9 @@ if __name__ == "__main__":
       WARNINGS = asbool(value)
     elif tag in ['--debug']:
       DEBUG = asbool(value)
+    elif tag in ['--silent']:
+      WARNINGS = asbool(value)
+      ERRORS = asbool(value)
     else:
       query_data.append(arg)
 
