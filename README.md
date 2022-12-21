@@ -46,7 +46,7 @@ class MyClass {
 
 Request multiple responses. By default only one answer is returned. However, the OpenAI model can return multiple answers. This is helpful when the answers may be of uncertainty quality or accuracy.
 
-### `--echo|-E`
+### `--echo|-E[=<bool>]`
 
 Echo the query in the response. The default is `False`.
 
@@ -54,10 +54,33 @@ Echo the query in the response. The default is `False`.
 
 Set the riskiness of responses.  Higher values means the model will take more risks. Try 0.9 for more creative applications, and 0 for ones with a well-defined answer. The default value is `0.1`.
 
-### `--force`
+### `--force[=<bool>]`
 
 Force responses to queries even when the advisor thinks they are not related to GridLAB-D. The default is `False`.
 
+### `--length|-L=<int>`
+
+Set the number of token allowed in the response. Default is 1024.
+
+### `--model|-M=<str>`
+
+Set the bot model name. The default is "text-davinci-003".
+
+### `--quiet|-q[=<bool>]`
+
+Disable error message output.
+
+### `--warning|-w[=<bool>]`
+
+Disable warning message output.
+
+### `--silent[=<bool>]`
+
+Disable warning and error message output.
+
+### `--debug[=<bool>]`
+
+Enable traceback on exceptions.
 
 ## Getting help
 
