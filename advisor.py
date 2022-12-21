@@ -6,12 +6,26 @@ Syntax:
 
 Options:
 
-  --signup          signup for an API key (opens browser)
-  --apikey          set the API key
-  --responses|-N    request multiple responses (default 1)
-  --echo|-E         echo the query in the response (default False)
-  --temperature|-T  set the riskiness of responses (default 0.1)
-  --force           force responses to queries not related to GridLAB-D
+  --help|-h|help            display this documentation
+  --signup                  signup for an API key (opens browser)
+  --apikey=<str>            set the API key
+  --responses|-N=<int>      request multiple responses (default 1)
+  --echo|-E[=<bool>]        echo the query in the response (default False)
+  --temperature|-T=<float>  set the riskiness of responses (default 0.1)
+  --force[=<bool>]          force responses to queries not related to 
+                            GridLAB-D
+  --length|-L=<int>         set the number of token allowed in the response 
+                            (default 1024)
+  --model|-M=<str>          set the bot name (default is "text-davinci-003")
+  --quiet|-q[=<bool>]       disable error message output
+  --warning|-w[=<bool>]     disable warning message output
+  --silent[=<bool>]         disable warning and error message output
+  --debug[=<bool>]          enable traceback on exceptions
+
+Description:
+
+  The advisor generates responses using OpenAI completion API.  Responses
+  can be expected to vary unless a 0 temperature is used. 
 
 Environment:
 
@@ -52,6 +66,11 @@ TEMPERATURE = 0.5
 ECHO = False
 CHOICES = 1
 FORCE = False
+TOKENS = 1024
+BOTNAME = "text-davinci-003"
+WARNINGS = False
+ERRORS = False
+DEBUG = False
 
 E_OK = 0
 E_FAILED = 1
@@ -59,13 +78,18 @@ E_TOKEN = 2
 E_SYNTAX = 3
 
 def error(msg,code=None):
-  print(f"ERROR [{BASENAME}]: {msg}")
+  if not ERRORS:
+    print(f"ERROR [{BASENAME}]: {msg}",file=sys.stderr)
   if type(code) is int:
     exit(code)
   elif type(code) is Exception:
     raise code(msg)
   else:
     raise OpenaiHelperException(msg)
+
+def warning(msg):
+  if not WARNINGS:
+    print(f"WARNING [{BASENAME}]: {msg}",file=sys.stderr)
 
 def asbool(value):
   if value == True or value == 'True' or (type(value) is int and value != 0):
@@ -81,9 +105,9 @@ def query(query_text):
   get_apikey()
   try:
     response = openai.Completion.create(
-      model="text-davinci-003",
+      model=BOTNAME,
       prompt=query_text,
-      max_tokens = 1024,
+      max_tokens = TOKENS,
       temperature = TEMPERATURE,
       echo = ECHO,
       n = CHOICES,
@@ -97,11 +121,17 @@ def query(query_text):
         reply.append(f"Response {n+1}:")
         reply.append(f"-----------")
         reply.append(result['text'].strip().replace('\n\n','\n'))
+        if result["finish_reason"] == "length":
+          warning(f"response {n} truncated; use '--length=<int>' option with a value greater than {TOKENS}")
     else:
         reply.append(response["choices"][0]['text'].strip())
+        if response["choices"][0]["finish_reason"] == "length":
+          warning(f"response truncated. Use '--length=<int>' option with a value greater than {TOKENS}")
   except:
     e_type,e_value,e_trace = sys.exc_info()
     error(e_value,E_FAILED)
+    if DEBUG:
+      raise
     return []
   return "\n".join(reply)
 
@@ -112,7 +142,7 @@ if __name__ == "__main__":
     spec = arg.split("=")
     tag,value = (spec[0],True) if len(spec) == 1 else (spec[0],'='.join(spec[1:]))
     if tag in ['-h','--help','help']:
-      print(__doc__)
+      print(__doc__,file=sys.stdout)
       exit(0)
     elif tag in ['--signup']:
       os.system("open https://beta.openai.com/account/api-keys")
@@ -128,12 +158,25 @@ if __name__ == "__main__":
       TEMPERATURE = float(value)
     elif tag in ['--force']:
       FORCE = asbool(value)
+    elif tag in ['-M','--model']:
+      BOTNAME = value
+    elif tag in ['-L','--length']:
+      TOKENS = int(value)
+    elif tag in ['-q','--quiet']:
+      ERRORS = asbool(value)
+    elif tag in ['-w','--warning']:
+      WARNINGS = asbool(value)
+    elif tag in ['--debug']:
+      DEBUG = asbool(value)
+    elif tag in ['--silent']:
+      WARNINGS = asbool(value)
+      ERRORS = asbool(value)
     else:
       query_data.append(arg)
 
   if not query_data:
-    print("Syntax: {BASENAME} [OPTIONS ...] [QUERY ...]")
+    print("Syntax: {BASENAME} [OPTIONS ...] [QUERY ...]",file=sys.stderr)
     exit(E_SYNTAX)
   query_text = " ".join(query_data)
 
-  print(query(query_text))
+  print(query(query_text),file=sys.stdout)
