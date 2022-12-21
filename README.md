@@ -7,7 +7,8 @@
 To install the tool from the command line:
 
 ~~~
-curl -sL https://raw.githubusercontent.com/dchassin/gridlabd-advisor/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/dchassin/gridlabd-advisor/main/install.sh | 
+Done. Use 'gridlabd advisor help' for more information.
 ~~~
 
 ## API Key
@@ -18,7 +19,7 @@ To obtain an API key from OpenAI:
 gridlabd advisor --signup
 ~~~
 
-After you signup, you can copy the key for your clipboard and paste it on the command line when you install the API key:
+This will open a browser window at the OpenAI website. After you signup, you can copy the key to your clipboard and paste it on the command line when you install the API key:
 
 ~~~
 gridlabd advisor --apikey=YOUR_APIKEY
