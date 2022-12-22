@@ -1,5 +1,6 @@
 {
   "application" : "gridlabd",
   "version" : 4.3,
+  "tool-name" : "advisor",
   "install-command" : "curl -sL https://raw.githubusercontent.com/dchassin/gridlabd-advisor/{branch}/install.sh | bash"
 }
